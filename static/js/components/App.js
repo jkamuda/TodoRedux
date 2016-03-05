@@ -13,6 +13,11 @@ export default React.createClass({
     e.preventDefault();
     const {text} = this.state;
     console.log('submit: ' + text);
+    dispatch({
+      type: 'ADD_TODO',
+      id: nextTodoId++,
+      text});
+    this.setState({text: ''});
   },
 
   onChange(e) {
