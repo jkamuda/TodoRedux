@@ -1,4 +1,14 @@
 import React from 'react';
-import App from './components/App'
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import todo from './reducers';
+import App from './components/App';
 
-React.render(<App />, document.body);
+let store = createStore(todo);
+
+React.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.body
+);
