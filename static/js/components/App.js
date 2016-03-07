@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-export default React.createClass({
+const App = React.createClass({
+  propTypes: {
+    onTodoClick: PropTypes.func.isRequired
+  },
 
   getInitialState() {
     return {
@@ -13,10 +17,7 @@ export default React.createClass({
     e.preventDefault();
     const {text} = this.state;
     console.log('submit: ' + text);
-    dispatch({
-      type: 'ADD_TODO',
-      id: nextTodoId++,
-      text});
+    this.props.onTodoClick(text);
     this.setState({text: ''});
   },
 
@@ -36,3 +37,20 @@ export default React.createClass({
     );
   }
 });
+
+const mapStateToProps = (state) => {
+  return { todos: state.todos }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTodoClick: (text) => {
+      dispatch({
+        type: 'ADD_TODO',
+        text
+      })
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
