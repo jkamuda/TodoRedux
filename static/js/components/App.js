@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { addTodo } from '../actions/index';
 
 const App = React.createClass({
   propTypes: {
@@ -53,10 +54,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onTodoClick: (text) => {
-      dispatch({
-        type: 'ADD_TODO',
-        text
-      })
+      dispatch(addTodo(text))
     }
   }
 };
