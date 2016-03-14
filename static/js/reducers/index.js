@@ -1,3 +1,4 @@
+let nextTodoId = 0;
 
 const todo = (state = [], action) => {
   console.log('handling action: ' + action.type + " " + action.text);
@@ -6,7 +7,8 @@ const todo = (state = [], action) => {
       return [
         ...state,
         {
-          text: action.text
+          text: action.text,
+          id: nextTodoId++
         }
       ];
     default:
