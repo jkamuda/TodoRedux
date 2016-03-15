@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from '../actions/index';
+import { addTodo, markCompleted } from '../actions/index';
 
 const App = React.createClass({
   propTypes: {
-    onTodoClick: PropTypes.func.isRequired
+    onTodoClick: PropTypes.func.isRequired,
+    onMarkCompleted: PropTypes.func.isRequired
   },
 
   getInitialState() {
@@ -16,8 +17,15 @@ const App = React.createClass({
 
   handleSubmit(e) {
     e.preventDefault();
+
     const {text} = this.state;
-    this.props.onTodoClick(text);
+    const {onTodoClick} = this.props;
+
+    if (!text) {
+      return;
+    }
+
+    onTodoClick(text);
     this.setState({text: ''});
   },
 
@@ -25,10 +33,22 @@ const App = React.createClass({
     this.setState({text: e.target.value});
   },
 
-  renderList() {
+  onMarkCompleted(e) {
+    console.log('completed ' + e);
+    const {onMarkCompleted} = this.props;
+    onMarkCompleted(2);
+  },
+
+  renderTodoList() {
     const {todos} = this.props;
     return todos.map(todo =>
-      <li key={todo.id}>{todo.text}</li>
+      <li key={todo.id}>
+        {todo.text}
+        &nbsp;
+        <button onClick={this.onMarkCompleted}>
+          Mark completed
+        </button>
+      </li>
     );
   },
 
@@ -40,7 +60,7 @@ const App = React.createClass({
           <button>{'Add Todo'}</button>
         </form>
         <ul>
-          {this.renderList()}
+          {this.renderTodoList()}
         </ul>
       </div>
     );
@@ -55,6 +75,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onTodoClick: (text) => {
       dispatch(addTodo(text))
+    },
+    onMarkCompleted: (id) => {
+      dispatch(markCompleted(id))
     }
   }
 };
