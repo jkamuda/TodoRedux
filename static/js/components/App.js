@@ -33,23 +33,19 @@ const App = React.createClass({
     this.setState({text: e.target.value});
   },
 
-  onMarkCompleted(e) {
-    console.log('completed ' + e);
-    const {onMarkCompleted} = this.props;
-    onMarkCompleted(2);
-  },
-
   renderTodoList() {
-    const {todos} = this.props;
-    return todos.map(todo =>
-      <li key={todo.id}>
-        {todo.text}
-        &nbsp;
-        <button onClick={this.onMarkCompleted}>
-          Mark completed
-        </button>
-      </li>
-    );
+    const {todos, onMarkCompleted} = this.props;
+    return todos
+      .filter(t => !t.completed)
+      .map(todo =>
+        <li key={todo.id}>
+          {todo.text}
+          &nbsp;
+          <button onClick={() => onMarkCompleted(todo.id)}>
+            Mark completed
+          </button>
+        </li>
+      );
   },
 
   render() {
